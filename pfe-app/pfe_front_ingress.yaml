@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: front1-ing
+  namespace: pfe
+  annotations:
+    cert-manager.io/issuer: "letsencrypt-staging"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - pfefront.marjane.ma
+    secretName: quickstart-example3-tls
+  rules:
+  - host: pfefront.marjane.ma
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pfefront1-service
+            port:
+              number: 443

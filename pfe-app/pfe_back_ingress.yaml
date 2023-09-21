@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: back1-ing
+  namespace: pfe1
+  annotations:
+    cert-manager.io/issuer: "letsencrypt-staging"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - pfe.marjane.ma
+    secretName: quickstart-example1-tls
+  rules:
+  - host: pfe.marjane.ma
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pfeback1-service
+            port:
+              number: 80
